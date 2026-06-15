@@ -14,6 +14,7 @@ func Setup(
 	authHandler *handlers.AuthHandler,
 	mealHandler *handlers.MealHandler,
 	metricsHandler *handlers.MetricsHandler,
+	foodPlanHandler *handlers.FoodPlanHandler,
 	jwtService *infraauth.JWTService,
 ) http.Handler {
 	r := chi.NewRouter()
@@ -45,6 +46,18 @@ func Setup(
 
 		r.Get("/metrics/summary", metricsHandler.Summary)
 		r.Get("/metrics", metricsHandler.ByPeriod)
+
+		r.Post("/food-plans", foodPlanHandler.Create)
+		r.Get("/food-plans", foodPlanHandler.List)
+		r.Get("/food-plans/active", foodPlanHandler.GetActive)
+		r.Get("/food-plans/{id}", foodPlanHandler.GetByID)
+		r.Put("/food-plans/{id}", foodPlanHandler.Update)
+		r.Patch("/food-plans/{id}/active", foodPlanHandler.SetActive)
+		r.Delete("/food-plans/{id}", foodPlanHandler.Delete)
+
+		r.Post("/food-plans/{id}/days/{weekday}/meals", foodPlanHandler.AddMealToDay)
+		r.Put("/food-plan-meals/{mealId}", foodPlanHandler.UpdateMealItem)
+		r.Delete("/food-plan-meals/{mealId}", foodPlanHandler.DeleteMealItem)
 	})
 
 	return r
