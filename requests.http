@@ -135,20 +135,30 @@ DELETE {{baseUrl}}/meals/{{mealId}}
 Authorization: Bearer {{token}}
 
 # ─────────────────────────────────────────
-# MÉTRICAS (Fase 4 — ainda não implementado)
+# MÉTRICAS ✅
 # ─────────────────────────────────────────
 
-### Resumo geral
-# GET {{baseUrl}}/metrics/summary
-# Authorization: Bearer {{token}}
+### Resumo geral (all time)
+GET {{baseUrl}}/metrics/summary
+Authorization: Bearer {{token}}
 
-### Métricas por período agrupadas por dia
-# GET {{baseUrl}}/metrics?start=2026-06-01&end=2026-06-30&groupBy=day
-# Authorization: Bearer {{token}}
+###
 
-### Métricas por período agrupadas por mês
-# GET {{baseUrl}}/metrics?start=2026-01-01&end=2026-12-31&groupBy=month
-# Authorization: Bearer {{token}}
+### Métricas por período — agrupado por dia
+GET {{baseUrl}}/metrics?start=2026-06-01&end=2026-06-30&groupBy=day
+Authorization: Bearer {{token}}
+
+###
+
+### Métricas por período — agrupado por mês
+GET {{baseUrl}}/metrics?start=2026-01-01&end=2026-12-31&groupBy=month
+Authorization: Bearer {{token}}
+
+###
+
+### Métricas — últimos 7 dias
+GET {{baseUrl}}/metrics?start=2026-06-08&end=2026-06-15&groupBy=day
+Authorization: Bearer {{token}}
 
 # ─────────────────────────────────────────
 # PLANO ALIMENTAR (Fase 5 — ainda não implementado)
