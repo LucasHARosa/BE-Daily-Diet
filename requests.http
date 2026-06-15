@@ -1,0 +1,169 @@
+### Variáveis — troque o token após fazer login
+@baseUrl = http://localhost:3333
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOWVkY2I3MWMtOWE2OC00OTZlLThkYTgtOGY0OWE5MDI1NmFiIiwiZXhwIjoxNzgxNTU3MDc1LCJpYXQiOjE3ODE1NTUyNzV9.50w4Yaw1i9ks32hs31yCM_0wvjx2ELYdnzHoV2T8gAs
+@refreshToken = 01e8e430-66f9-42d7-a468-9acfe83808db
+
+# ─────────────────────────────────────────
+# HEALTH
+# ─────────────────────────────────────────
+
+### Health check
+GET {{baseUrl}}/health
+
+# ─────────────────────────────────────────
+# AUTH
+# ─────────────────────────────────────────
+
+### Criar usuário
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "name": "Lucas",
+  "email": "lucas@email.com",
+  "password": "12345678"
+}
+
+###
+
+### Login
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "lucas@email.com",
+  "password": "12345678"
+}
+
+###
+
+### Renovar token (refresh)
+POST {{baseUrl}}/sessions/refresh
+Content-Type: application/json
+
+{
+  "refresh_token": "{{refreshToken}}"
+}
+
+###
+
+### Me (rota protegida — precisa do token)
+GET {{baseUrl}}/me
+Authorization: Bearer {{token}}
+
+# ─────────────────────────────────────────
+# REFEIÇÕES (Fase 3 — ainda não implementado)
+# ─────────────────────────────────────────
+
+### Criar refeição
+# POST {{baseUrl}}/meals
+# Authorization: Bearer {{token}}
+# Content-Type: application/json
+#
+# {
+#   "name": "Almoço",
+#   "description": "Arroz, feijão e frango",
+#   "eaten_at": "2026-06-15T12:00:00Z",
+#   "is_on_diet": true,
+#   "calories": 650
+# }
+
+### Listar refeições
+# GET {{baseUrl}}/meals
+# Authorization: Bearer {{token}}
+
+### Listar refeições com filtros
+# GET {{baseUrl}}/meals?start=2026-06-01&end=2026-06-30&status=on_diet
+# Authorization: Bearer {{token}}
+
+### Buscar refeição por ID
+# GET {{baseUrl}}/meals/ID_AQUI
+# Authorization: Bearer {{token}}
+
+### Editar refeição
+# PUT {{baseUrl}}/meals/ID_AQUI
+# Authorization: Bearer {{token}}
+# Content-Type: application/json
+#
+# {
+#   "name": "Almoço editado",
+#   "description": "Arroz, feijão, frango e salada",
+#   "eaten_at": "2026-06-15T12:30:00Z",
+#   "is_on_diet": true,
+#   "calories": 700
+# }
+
+### Excluir refeição
+# DELETE {{baseUrl}}/meals/ID_AQUI
+# Authorization: Bearer {{token}}
+
+# ─────────────────────────────────────────
+# MÉTRICAS (Fase 4 — ainda não implementado)
+# ─────────────────────────────────────────
+
+### Resumo geral
+# GET {{baseUrl}}/metrics/summary
+# Authorization: Bearer {{token}}
+
+### Métricas por período agrupadas por dia
+# GET {{baseUrl}}/metrics?start=2026-06-01&end=2026-06-30&groupBy=day
+# Authorization: Bearer {{token}}
+
+### Métricas por período agrupadas por mês
+# GET {{baseUrl}}/metrics?start=2026-01-01&end=2026-12-31&groupBy=month
+# Authorization: Bearer {{token}}
+
+# ─────────────────────────────────────────
+# PLANO ALIMENTAR (Fase 5 — ainda não implementado)
+# ─────────────────────────────────────────
+
+### Criar plano alimentar
+# POST {{baseUrl}}/food-plans
+# Authorization: Bearer {{token}}
+# Content-Type: application/json
+#
+# {
+#   "title": "Plano Semana 1",
+#   "description": "Plano de dieta para a primeira semana"
+# }
+
+### Listar planos
+# GET {{baseUrl}}/food-plans
+# Authorization: Bearer {{token}}
+
+### Plano ativo
+# GET {{baseUrl}}/food-plans/active
+# Authorization: Bearer {{token}}
+
+# ─────────────────────────────────────────
+# PERFIL (Fase 6 — ainda não implementado)
+# ─────────────────────────────────────────
+
+### Buscar perfil
+# GET {{baseUrl}}/me/profile
+# Authorization: Bearer {{token}}
+
+### Atualizar perfil
+# PATCH {{baseUrl}}/me/profile
+# Authorization: Bearer {{token}}
+# Content-Type: application/json
+#
+# {
+#   "weight_kg": 80.5,
+#   "height_cm": 178,
+#   "activity_level": "moderate",
+#   "gym_frequency_per_week": 4
+# }
+
+# ─────────────────────────────────────────
+# ESTIMATIVA DE CALORIAS (Fase 6 — ainda não implementado)
+# ─────────────────────────────────────────
+
+### Estimar calorias por descrição
+# POST {{baseUrl}}/calorie-estimations
+# Authorization: Bearer {{token}}
+# Content-Type: application/json
+#
+# {
+#   "description": "Sanduíche de pão integral com atum, alface e tomate"
+# }
