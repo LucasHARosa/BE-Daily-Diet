@@ -8,6 +8,36 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+type FoodPlan struct {
+	ID          pgtype.UUID
+	UserID      pgtype.UUID
+	Title       string
+	Description pgtype.Text
+	IsActive    bool
+	CreatedAt   pgtype.Timestamp
+	UpdatedAt   pgtype.Timestamp
+}
+
+type FoodPlanDay struct {
+	ID         pgtype.UUID
+	FoodPlanID pgtype.UUID
+	Weekday    int16
+	CreatedAt  pgtype.Timestamp
+	UpdatedAt  pgtype.Timestamp
+}
+
+type FoodPlanMeal struct {
+	ID            pgtype.UUID
+	FoodPlanDayID pgtype.UUID
+	Name          string
+	Description   pgtype.Text
+	ScheduledTime pgtype.Text
+	Calories      pgtype.Int4
+	SortOrder     int32
+	CreatedAt     pgtype.Timestamp
+	UpdatedAt     pgtype.Timestamp
+}
+
 type Meal struct {
 	ID                   pgtype.UUID
 	UserID               pgtype.UUID
