@@ -52,50 +52,87 @@ GET {{baseUrl}}/me
 Authorization: Bearer {{token}}
 
 # ─────────────────────────────────────────
-# REFEIÇÕES (Fase 3 — ainda não implementado)
+# REFEIÇÕES ✅
 # ─────────────────────────────────────────
 
-### Criar refeição
-# POST {{baseUrl}}/meals
-# Authorization: Bearer {{token}}
-# Content-Type: application/json
-#
-# {
-#   "name": "Almoço",
-#   "description": "Arroz, feijão e frango",
-#   "eaten_at": "2026-06-15T12:00:00Z",
-#   "is_on_diet": true,
-#   "calories": 650
-# }
+### Criar refeição (dentro da dieta)
+POST {{baseUrl}}/meals
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
-### Listar refeições
-# GET {{baseUrl}}/meals
-# Authorization: Bearer {{token}}
+{
+  "name": "Almoço",
+  "description": "Arroz, feijão e frango",
+  "eaten_at": "2026-06-15T12:00:00Z",
+  "is_on_diet": true,
+  "calories": 650
+}
 
-### Listar refeições com filtros
-# GET {{baseUrl}}/meals?start=2026-06-01&end=2026-06-30&status=on_diet
-# Authorization: Bearer {{token}}
+###
+
+### Criar refeição (fora da dieta, sem calorias)
+POST {{baseUrl}}/meals
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Pizza",
+  "eaten_at": "2026-06-15T20:00:00Z",
+  "is_on_diet": false
+}
+
+###
+
+### Listar todas as refeições
+GET {{baseUrl}}/meals
+Authorization: Bearer {{token}}
+
+###
+
+### Listar só refeições dentro da dieta
+GET {{baseUrl}}/meals?status=on_diet
+Authorization: Bearer {{token}}
+
+###
+
+### Listar só refeições fora da dieta
+GET {{baseUrl}}/meals?status=off_diet
+Authorization: Bearer {{token}}
+
+###
+
+### Listar refeições com filtro de período
+GET {{baseUrl}}/meals?start=2026-06-01T00:00:00Z&end=2026-06-30T23:59:59Z
+Authorization: Bearer {{token}}
+
+###
 
 ### Buscar refeição por ID
-# GET {{baseUrl}}/meals/ID_AQUI
-# Authorization: Bearer {{token}}
+@mealId = COLE_O_ID_DA_REFEIÇÃO_AQUI
+
+GET {{baseUrl}}/meals/{{mealId}}
+Authorization: Bearer {{token}}
+
+###
 
 ### Editar refeição
-# PUT {{baseUrl}}/meals/ID_AQUI
-# Authorization: Bearer {{token}}
-# Content-Type: application/json
-#
-# {
-#   "name": "Almoço editado",
-#   "description": "Arroz, feijão, frango e salada",
-#   "eaten_at": "2026-06-15T12:30:00Z",
-#   "is_on_diet": true,
-#   "calories": 700
-# }
+PUT {{baseUrl}}/meals/{{mealId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Almoço editado",
+  "description": "Arroz, feijão, frango e salada",
+  "eaten_at": "2026-06-15T12:30:00Z",
+  "is_on_diet": true,
+  "calories": 700
+}
+
+###
 
 ### Excluir refeição
-# DELETE {{baseUrl}}/meals/ID_AQUI
-# Authorization: Bearer {{token}}
+DELETE {{baseUrl}}/meals/{{mealId}}
+Authorization: Bearer {{token}}
 
 # ─────────────────────────────────────────
 # MÉTRICAS (Fase 4 — ainda não implementado)
