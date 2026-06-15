@@ -7,6 +7,7 @@ import (
 
 	appauth "github.com/LucasHARosa/BE-Daily-Diet/internal/application/auth"
 	appmeals "github.com/LucasHARosa/BE-Daily-Diet/internal/application/meals"
+	appmetrics "github.com/LucasHARosa/BE-Daily-Diet/internal/application/metrics"
 	"github.com/LucasHARosa/BE-Daily-Diet/internal/config"
 	"github.com/LucasHARosa/BE-Daily-Diet/internal/http/handlers"
 	"github.com/LucasHARosa/BE-Daily-Diet/internal/http/routes"
@@ -35,17 +36,20 @@ func main() {
 	// Repositories
 	userRepo := repositories.NewUserRepository(queries)
 	mealRepo := repositories.NewMealRepository(queries)
+	metricsRepo := repositories.NewMetricsRepository(queries)
 
 	// Services
 	authService := appauth.NewService(userRepo, jwtService, cfg.JWTRefreshTokenExpiresDays)
 	mealService := appmeals.NewService(mealRepo)
+	metricsService := appmetrics.NewService(metricsRepo)
 
 	// Handlers
 	authHandler := handlers.NewAuthHandler(authService)
 	mealHandler := handlers.NewMealHandler(mealService)
+	metricsHandler := handlers.NewMetricsHandler(metricsService)
 
 	// Router
-	router := routes.Setup(authHandler, mealHandler, jwtService)
+	router := routes.Setup(authHandler, mealHandler, metricsHandler, jwtService)
 
 	fmt.Printf("Server running on port %s\n", cfg.Port)
 	if err := http.ListenAndServe(":"+cfg.Port, router); err != nil {

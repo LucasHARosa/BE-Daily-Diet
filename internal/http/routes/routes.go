@@ -13,6 +13,7 @@ import (
 func Setup(
 	authHandler *handlers.AuthHandler,
 	mealHandler *handlers.MealHandler,
+	metricsHandler *handlers.MetricsHandler,
 	jwtService *infraauth.JWTService,
 ) http.Handler {
 	r := chi.NewRouter()
@@ -41,6 +42,9 @@ func Setup(
 		r.Get("/meals/{id}", mealHandler.GetByID)
 		r.Put("/meals/{id}", mealHandler.Update)
 		r.Delete("/meals/{id}", mealHandler.Delete)
+
+		r.Get("/metrics/summary", metricsHandler.Summary)
+		r.Get("/metrics", metricsHandler.ByPeriod)
 	})
 
 	return r
