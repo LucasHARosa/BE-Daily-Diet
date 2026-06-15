@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: daily_diet_postgres
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: daily_diet
+    ports:
+      - "5432:5432"
+    volumes:
+      - daily_diet_pg:/var/lib/postgresql/data
+
+volumes:
+  daily_diet_pg:
