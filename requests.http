@@ -161,26 +161,131 @@ GET {{baseUrl}}/metrics?start=2026-06-08&end=2026-06-15&groupBy=day
 Authorization: Bearer {{token}}
 
 # ─────────────────────────────────────────
-# PLANO ALIMENTAR (Fase 5 — ainda não implementado)
+# PLANO ALIMENTAR ✅
 # ─────────────────────────────────────────
 
 ### Criar plano alimentar
-# POST {{baseUrl}}/food-plans
-# Authorization: Bearer {{token}}
-# Content-Type: application/json
-#
-# {
-#   "title": "Plano Semana 1",
-#   "description": "Plano de dieta para a primeira semana"
-# }
+POST {{baseUrl}}/food-plans
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Plano Semana 1",
+  "description": "Plano de dieta para a primeira semana"
+}
+
+###
 
 ### Listar planos
-# GET {{baseUrl}}/food-plans
-# Authorization: Bearer {{token}}
+GET {{baseUrl}}/food-plans
+Authorization: Bearer {{token}}
 
-### Plano ativo
-# GET {{baseUrl}}/food-plans/active
-# Authorization: Bearer {{token}}
+###
+
+### Plano ativo (retorna plano com dias e refeições)
+GET {{baseUrl}}/food-plans/active
+Authorization: Bearer {{token}}
+
+###
+
+@planId = COLE_O_ID_DO_PLANO_AQUI
+
+### Buscar plano por ID (com dias e refeições)
+GET {{baseUrl}}/food-plans/{{planId}}
+Authorization: Bearer {{token}}
+
+###
+
+### Editar plano
+PUT {{baseUrl}}/food-plans/{{planId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Plano Semana 1 - Atualizado",
+  "description": "Plano revisado"
+}
+
+###
+
+### Ativar plano (desativa os outros automaticamente)
+PATCH {{baseUrl}}/food-plans/{{planId}}/active
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "is_active": true
+}
+
+###
+
+### Desativar plano
+PATCH {{baseUrl}}/food-plans/{{planId}}/active
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "is_active": false
+}
+
+###
+
+### Adicionar refeição na Segunda-feira (weekday=0) do plano
+POST {{baseUrl}}/food-plans/{{planId}}/days/0/meals
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Café da manhã",
+  "description": "Ovos mexidos e pão integral",
+  "scheduled_time": "07:30",
+  "calories": 350,
+  "sort_order": 1
+}
+
+###
+
+### Adicionar refeição na Sexta-feira (weekday=4) do plano
+POST {{baseUrl}}/food-plans/{{planId}}/days/4/meals
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Almoço",
+  "description": "Frango grelhado com legumes",
+  "scheduled_time": "12:00",
+  "calories": 600,
+  "sort_order": 2
+}
+
+###
+
+@planMealId = COLE_O_ID_DA_REFEICAO_DO_PLANO_AQUI
+
+### Editar refeição do plano
+PUT {{baseUrl}}/food-plan-meals/{{planMealId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Café da manhã atualizado",
+  "description": "Ovos mexidos, pão integral e vitamina",
+  "scheduled_time": "08:00",
+  "calories": 420,
+  "sort_order": 1
+}
+
+###
+
+### Excluir refeição do plano
+DELETE {{baseUrl}}/food-plan-meals/{{planMealId}}
+Authorization: Bearer {{token}}
+
+###
+
+### Excluir plano alimentar
+DELETE {{baseUrl}}/food-plans/{{planId}}
+Authorization: Bearer {{token}}
 
 # ─────────────────────────────────────────
 # PERFIL (Fase 6 — ainda não implementado)
