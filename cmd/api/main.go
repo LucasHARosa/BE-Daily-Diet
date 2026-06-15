@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	appauth "github.com/LucasHARosa/BE-Daily-Diet/internal/application/auth"
+	appmeals "github.com/LucasHARosa/BE-Daily-Diet/internal/application/meals"
 	"github.com/LucasHARosa/BE-Daily-Diet/internal/config"
 	"github.com/LucasHARosa/BE-Daily-Diet/internal/http/handlers"
 	"github.com/LucasHARosa/BE-Daily-Diet/internal/http/routes"
@@ -33,15 +34,18 @@ func main() {
 
 	// Repositories
 	userRepo := repositories.NewUserRepository(queries)
+	mealRepo := repositories.NewMealRepository(queries)
 
 	// Services
 	authService := appauth.NewService(userRepo, jwtService, cfg.JWTRefreshTokenExpiresDays)
+	mealService := appmeals.NewService(mealRepo)
 
 	// Handlers
 	authHandler := handlers.NewAuthHandler(authService)
+	mealHandler := handlers.NewMealHandler(mealService)
 
 	// Router
-	router := routes.Setup(authHandler, jwtService)
+	router := routes.Setup(authHandler, mealHandler, jwtService)
 
 	fmt.Printf("Server running on port %s\n", cfg.Port)
 	if err := http.ListenAndServe(":"+cfg.Port, router); err != nil {

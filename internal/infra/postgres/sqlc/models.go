@@ -8,6 +8,20 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+type Meal struct {
+	ID                   pgtype.UUID
+	UserID               pgtype.UUID
+	FoodPlanMealID       pgtype.UUID
+	FoodPlanMealSnapshot []byte
+	Name                 string
+	Description          pgtype.Text
+	EatenAt              pgtype.Timestamp
+	IsOnDiet             bool
+	Calories             pgtype.Int4
+	CreatedAt            pgtype.Timestamp
+	UpdatedAt            pgtype.Timestamp
+}
+
 type RefreshToken struct {
 	ID        pgtype.UUID
 	UserID    pgtype.UUID

@@ -12,6 +12,7 @@ import (
 
 func Setup(
 	authHandler *handlers.AuthHandler,
+	mealHandler *handlers.MealHandler,
 	jwtService *infraauth.JWTService,
 ) http.Handler {
 	r := chi.NewRouter()
@@ -32,7 +33,14 @@ func Setup(
 	// Rotas protegidas
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.Auth(jwtService))
+
 		r.Get("/me", authHandler.Me)
+
+		r.Post("/meals", mealHandler.Create)
+		r.Get("/meals", mealHandler.List)
+		r.Get("/meals/{id}", mealHandler.GetByID)
+		r.Put("/meals/{id}", mealHandler.Update)
+		r.Delete("/meals/{id}", mealHandler.Delete)
 	})
 
 	return r
