@@ -8,6 +8,17 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+type CalorieEstimation struct {
+	ID                pgtype.UUID
+	UserID            pgtype.UUID
+	Description       string
+	EstimatedCalories int32
+	Confidence        string
+	Items             []byte
+	Observation       pgtype.Text
+	CreatedAt         pgtype.Timestamp
+}
+
 type FoodPlan struct {
 	ID          pgtype.UUID
 	UserID      pgtype.UUID
@@ -67,4 +78,18 @@ type User struct {
 	PasswordHash string
 	CreatedAt    pgtype.Timestamp
 	UpdatedAt    pgtype.Timestamp
+}
+
+type UserProfile struct {
+	ID                  pgtype.UUID
+	UserID              pgtype.UUID
+	WeightKg            pgtype.Numeric
+	HeightCm            pgtype.Int4
+	BirthDate           pgtype.Date
+	BodyFatPercentage   pgtype.Numeric
+	BasalCalories       pgtype.Int4
+	ActivityLevel       pgtype.Text
+	GymFrequencyPerWeek pgtype.Int4
+	CreatedAt           pgtype.Timestamp
+	UpdatedAt           pgtype.Timestamp
 }
