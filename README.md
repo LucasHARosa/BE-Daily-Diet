@@ -1,3 +1,4 @@
+[![GitHub license](https://img.shields.io/github/license/LucasHARosa/BE-Daily-Diet)](https://github.com/LucasHARosa/BE-Daily-Diet/blob/main/LICENSE)
 [![GitHub repo size](https://img.shields.io/github/repo-size/LucasHARosa/BE-Daily-Diet)](https://github.com/LucasHARosa/BE-Daily-Diet)
 [![GitHub language count](https://img.shields.io/github/languages/count/LucasHARosa/BE-Daily-Diet)](https://github.com/LucasHARosa/BE-Daily-Diet)
 [![GitHub top language](https://img.shields.io/github/languages/top/LucasHARosa/BE-Daily-Diet)](https://github.com/LucasHARosa/BE-Daily-Diet)
