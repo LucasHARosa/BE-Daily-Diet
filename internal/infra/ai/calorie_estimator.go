@@ -54,22 +54,23 @@ Critérios para confidence:
 - low: descrição vaga ou muito genérica`, description)
 
 	reqBody, err := json.Marshal(map[string]any{
-		"model":      "claude-haiku-4-5-20251001",
-		"max_tokens": 1024,
-		"messages": []map[string]string{
-			{"role": "user", "content": prompt},
+		"contents": []map[string]any{
+			{
+				"parts": []map[string]string{
+					{"text": prompt},
+				},
+			},
 		},
 	})
 	if err != nil {
 		return EstimationResult{}, err
 	}
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "https://api.anthropic.com/v1/messages", bytes.NewReader(reqBody))
+	url := "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + e.apiKey
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(reqBody))
 	if err != nil {
 		return EstimationResult{}, err
 	}
-	req.Header.Set("x-api-key", e.apiKey)
-	req.Header.Set("anthropic-version", "2023-06-01")
 	req.Header.Set("content-type", "application/json")
 
 	resp, err := e.httpClient.Do(req)
@@ -79,26 +80,57 @@ Critérios para confidence:
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return EstimationResult{}, fmt.Errorf("anthropic API returned status %d", resp.StatusCode)
+		return EstimationResult{}, fmt.Errorf("Gemini API returned status %d", resp.StatusCode)
 	}
 
 	var apiResp struct {
-		Content []struct {
-			Type string `json:"type"`
-			Text string `json:"text"`
-		} `json:"content"`
+		Candidates []struct {
+			Content struct {
+				Parts []struct {
+					Text string `json:"text"`
+				} `json:"parts"`
+			} `json:"content"`
+		} `json:"candidates"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&apiResp); err != nil {
 		return EstimationResult{}, err
 	}
-	if len(apiResp.Content) == 0 {
-		return EstimationResult{}, fmt.Errorf("empty response from Anthropic API")
+	if len(apiResp.Candidates) == 0 || len(apiResp.Candidates[0].Content.Parts) == 0 {
+		return EstimationResult{}, fmt.Errorf("empty response from Gemini API")
+	}
+
+	text := apiResp.Candidates[0].Content.Parts[0].Text
+
+	// Gemini às vezes envolve o JSON em ```json ... ```
+	if start := indexOf(text, "{"); start >= 0 {
+		if end := lastIndexOf(text, "}"); end >= start {
+			text = text[start : end+1]
+		}
 	}
 
 	var result EstimationResult
-	if err := json.Unmarshal([]byte(apiResp.Content[0].Text), &result); err != nil {
+	if err := json.Unmarshal([]byte(text), &result); err != nil {
 		return EstimationResult{}, fmt.Errorf("failed to parse AI response as JSON: %w", err)
 	}
 
 	return result, nil
+}
+
+func indexOf(s, substr string) int {
+	for i := range s {
+		if i+len(substr) <= len(s) && s[i:i+len(substr)] == substr {
+			return i
+		}
+	}
+	return -1
+}
+
+func lastIndexOf(s, substr string) int {
+	result := -1
+	for i := range s {
+		if i+len(substr) <= len(s) && s[i:i+len(substr)] == substr {
+			result = i
+		}
+	}
+	return result
 }

@@ -11,7 +11,7 @@ type Config struct {
 	JWTSecret                  string
 	JWTAccessTokenExpiresMin   int
 	JWTRefreshTokenExpiresDays int
-	AnthropicAPIKey            string
+	GeminiAPIKey               string
 }
 
 func Load() Config {
@@ -30,7 +30,7 @@ func Load() Config {
 		JWTSecret:                  os.Getenv("JWT_SECRET"),
 		JWTAccessTokenExpiresMin:   accessMin,
 		JWTRefreshTokenExpiresDays: refreshDays,
-		AnthropicAPIKey:            os.Getenv("ANTHROPIC_API_KEY"),
+		GeminiAPIKey:               os.Getenv("GEMINI_API_KEY"),
 	}
 }
 

@@ -46,7 +46,7 @@ func main() {
 	calorieEstimationRepo := repositories.NewCalorieEstimationRepository(queries)
 
 	// Infra
-	calorieEstimator := appai.NewCalorieEstimator(cfg.AnthropicAPIKey)
+	calorieEstimator := appai.NewCalorieEstimator(cfg.GeminiAPIKey)
 
 	// Services
 	authService := appauth.NewService(userRepo, jwtService, cfg.JWTRefreshTokenExpiresDays)
