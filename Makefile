@@ -24,6 +24,12 @@ sqlc:
 test:
 	go test ./...
 
+test-unit:
+	go test ./internal/domain/...
+
+test-integration:
+	go test ./internal/infra/postgres/repositories/... ./internal/application/auth/... -v
+
 fmt:
 	gofmt -w .
 
