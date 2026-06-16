@@ -15,6 +15,8 @@ func Setup(
 	mealHandler *handlers.MealHandler,
 	metricsHandler *handlers.MetricsHandler,
 	foodPlanHandler *handlers.FoodPlanHandler,
+	profileHandler *handlers.ProfileHandler,
+	calorieHandler *handlers.CalorieEstimationHandler,
 	jwtService *infraauth.JWTService,
 ) http.Handler {
 	r := chi.NewRouter()
@@ -58,6 +60,12 @@ func Setup(
 		r.Post("/food-plans/{id}/days/{weekday}/meals", foodPlanHandler.AddMealToDay)
 		r.Put("/food-plan-meals/{mealId}", foodPlanHandler.UpdateMealItem)
 		r.Delete("/food-plan-meals/{mealId}", foodPlanHandler.DeleteMealItem)
+
+		r.Get("/me/profile", profileHandler.Get)
+		r.Patch("/me/profile", profileHandler.Update)
+
+		r.Post("/calorie-estimations", calorieHandler.Estimate)
+		r.Get("/calorie-estimations", calorieHandler.List)
 	})
 
 	return r
