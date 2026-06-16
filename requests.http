@@ -288,34 +288,56 @@ DELETE {{baseUrl}}/food-plans/{{planId}}
 Authorization: Bearer {{token}}
 
 # ─────────────────────────────────────────
-# PERFIL (Fase 6 — ainda não implementado)
+# PERFIL ✅
 # ─────────────────────────────────────────
 
-### Buscar perfil
-# GET {{baseUrl}}/me/profile
-# Authorization: Bearer {{token}}
+### Buscar perfil do usuário
+GET {{baseUrl}}/me/profile
+Authorization: Bearer {{token}}
 
-### Atualizar perfil
-# PATCH {{baseUrl}}/me/profile
-# Authorization: Bearer {{token}}
-# Content-Type: application/json
-#
-# {
-#   "weight_kg": 80.5,
-#   "height_cm": 178,
-#   "activity_level": "moderate",
-#   "gym_frequency_per_week": 4
-# }
+###
+
+### Atualizar perfil (todos os campos são opcionais)
+PATCH {{baseUrl}}/me/profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "weight_kg": 80.5,
+  "height_cm": 178,
+  "birth_date": "1999-04-15",
+  "body_fat_percentage": 18.5,
+  "basal_calories": 1800,
+  "activity_level": "moderate",
+  "gym_frequency_per_week": 4
+}
 
 # ─────────────────────────────────────────
-# ESTIMATIVA DE CALORIAS (Fase 6 — ainda não implementado)
+# ESTIMATIVA DE CALORIAS ✅
 # ─────────────────────────────────────────
 
-### Estimar calorias por descrição
-# POST {{baseUrl}}/calorie-estimations
-# Authorization: Bearer {{token}}
-# Content-Type: application/json
-#
-# {
-#   "description": "Sanduíche de pão integral com atum, alface e tomate"
-# }
+### Estimar calorias (chama IA — requer ANTHROPIC_API_KEY no .env)
+POST {{baseUrl}}/calorie-estimations
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "description": "Sanduíche de pão integral com atum, alface e tomate"
+}
+
+###
+
+### Estimar refeição mais detalhada
+POST {{baseUrl}}/calorie-estimations
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "description": "200g de arroz integral, 150g de frango grelhado, salada com alface, tomate e cenoura com azeite"
+}
+
+###
+
+### Histórico de estimativas
+GET {{baseUrl}}/calorie-estimations
+Authorization: Bearer {{token}}
