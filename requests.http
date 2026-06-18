@@ -1,7 +1,7 @@
 ### Variáveis — troque o token após fazer login
 @baseUrl = http://localhost:3333
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOWVkY2I3MWMtOWE2OC00OTZlLThkYTgtOGY0OWE5MDI1NmFiIiwiZXhwIjoxNzgxNTU3MDc1LCJpYXQiOjE3ODE1NTUyNzV9.50w4Yaw1i9ks32hs31yCM_0wvjx2ELYdnzHoV2T8gAs
-@refreshToken = 01e8e430-66f9-42d7-a468-9acfe83808db
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOWVkY2I3MWMtOWE2OC00OTZlLThkYTgtOGY0OWE5MDI1NmFiIiwiZXhwIjoxNzgxNzg5NDU2LCJpYXQiOjE3ODE3ODc2NTZ9.bZJhAE_xSk99l05rTUgb95eTWcWjj0fNOPVUy2idCa8
+@refreshToken = 0a1b9ab2-4ba9-4375-a1c3-f67dddf0abcf
 
 # ─────────────────────────────────────────
 # HEALTH
@@ -188,7 +188,7 @@ Authorization: Bearer {{token}}
 
 ###
 
-@planId = COLE_O_ID_DO_PLANO_AQUI
+@planId = c333017a-f0ca-4e9b-8fa4-517207db181e
 
 ### Buscar plano por ID (com dias e refeições)
 GET {{baseUrl}}/food-plans/{{planId}}
